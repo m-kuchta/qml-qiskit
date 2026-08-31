@@ -1,0 +1,17 @@
+dataset_path: "data/processed/dataset" 
+backend:
+  type: "LOCAL" # "LOCAL", "FAKE", "REAL"
+  name: "fake_melbourne" # Used only in "FAKE" and "REAL" mode 
+optimizer: # Parameters for SciPy minimize() function
+  name: "COBYLA" 
+  num_epochs: 100
+  tol: 0.001
+  rho_beg: 1.0
+theta_range: [-3.14159, 3.14159] # Range of ansatz parameters
+feature_range: [-3.14159, 3.14159] # Range to which dataset features are scaled
+observable: "SUM_OF_LOCAL_Z" # e.g. "SUM_OF_LOCAL_Z", "LOCAL_Z", "GLOBAL_Z" ...
+estimator_shots: 1024
+loss_type: "mse"
+weights: # Weights for classes in dataset
+  "0": 1
+  "1": 1
