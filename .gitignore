@@ -216,3 +216,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Datasets
+data/*
+
+# Results
+results/*
+
+# Configs
+configs/*
+!configs/vqc_config.template.yaml
+
+#HPC
+hpc/*
+!hpc/run_array.template.sh 
+!hpc/create_array.py
+
