@@ -4,11 +4,11 @@ from typing import Any
 import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import (
-    EfficientSU2,
     RealAmplitudes,
     StatePreparation,
     ZFeatureMap,
     ZZFeatureMap,
+    efficient_su2,
 )
 from qiskit.providers import BackendV2
 from qiskit.quantum_info import SparsePauliOp
@@ -22,10 +22,10 @@ from qiskit_ibm_runtime import QiskitRuntimeService
 from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
 
 from src.quantum_circuits import (
-    angle_feature_map,
-    dense_angle_feature_map,
+    angle_fmap,
+    dense_angle_fmap,
     overlapped_ansatz,
-    phase_cry_feature_map,
+    phase_cry_fmap,
 )
 
 
@@ -116,7 +116,6 @@ class CircuitFactory:
             fmap = ZFeatureMap(
                 feature_dimension=self.num_qubits,
                 reps=self.fmap_reps,
-                # entanglement=self.fmap_entanglement,
                 insert_barriers=True,
             )
         elif self.fmap_name == "ZZ":
@@ -126,27 +125,25 @@ class CircuitFactory:
                 entanglement=self.fmap_entanglement,
                 insert_barriers=True,
             )
-        # elif self.fmap_name == "Angle":
-        #     fmap = angle_feature_map(
-        #         feature_dimension=self.num_qubits,
-        #         reps=self.fmap_reps,
-        #         # entanglement=self.fmap_entanglement,
-        #         insert_barriers=True,
-        #     )
-        # elif self.fmap_name == "DenseAngle":
-        #     fmap = dense_angle_feature_map(
-        #         feature_dimension=self.num_qubits,
-        #         reps=self.fmap_reps,
-        #         # entanglement=self.fmap_entanglement,
-        #         insert_barriers=True,
-        #     )
-        # elif self.fmap_name == "PhaseCRY":
-        #     fmap = phase_cry_feature_map(
-        #         feature_dimension=self.num_qubits,
-        #         reps=self.fmap_reps,
-        #         entanglement=self.fmap_entanglement,
-        #         insert_barriers=True,
-        #     )
+        elif self.fmap_name == "Angle":
+            fmap = angle_fmap(
+                feature_dimension=self.num_qubits,
+                reps=self.fmap_reps,
+                insert_barriers=True,
+            )
+        elif self.fmap_name == "DenseAngle":
+            fmap = dense_angle_fmap(
+                num_qubits=self.num_qubits,
+                reps=self.fmap_reps,
+                # entanglement=self.fmap_entanglement,
+                insert_barriers=True,
+            )
+        elif self.fmap_name == "PhaseCRY":
+            fmap = phase_cry_fmap(
+                num_qubits=self.num_qubits,
+                reps=self.fmap_reps,
+                insert_barriers=True,
+            )
         elif self.fmap_name == "Amplitude":
             pass
         else:
@@ -162,7 +159,7 @@ class CircuitFactory:
                 insert_barriers=True,
             )
         elif self.ansatz_name == "EfficientSU2":
-            ansatz = EfficientSU2(
+            ansatz = efficient_su2(
                 num_qubits=self.num_qubits,
                 entanglement=self.ansatz_entanglement,
                 reps=self.ansatz_reps,
