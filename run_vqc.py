@@ -279,11 +279,11 @@ if __name__ == "__main__":
         },
     }
 
-    timestamp = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d_%H%M")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M")
     run_id = uuid.uuid4().hex[:6]
 
-    fmap_short = args.fmap[:8]
-    ansatz_short = args.ansatz[:8]
+    fmap_short = args.fmap[:12]
+    ansatz_short = args.ansatz[:12]
     fmap_ent_short = args.fmap_entanglement[:4]
     ansatz_ent_short = args.ansatz_entanglement[:4]
     filename = f"{timestamp}_seed{args.seed}_{fmap_short}_ent_{fmap_ent_short}_{ansatz_short}_ent_{ansatz_ent_short}_{run_id}.json"

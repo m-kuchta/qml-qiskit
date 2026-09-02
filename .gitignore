@@ -232,3 +232,6 @@ hpc/*
 !hpc/run_array.template.sh 
 !hpc/create_array.py
 
+#Logs
+logs
+
