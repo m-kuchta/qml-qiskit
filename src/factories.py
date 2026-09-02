@@ -4,11 +4,11 @@ from typing import Any
 import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.circuit.library import (
+    EfficientSU2,
     RealAmplitudes,
     StatePreparation,
     ZFeatureMap,
     ZZFeatureMap,
-    efficient_su2,
 )
 from qiskit.providers import BackendV2
 from qiskit.quantum_info import SparsePauliOp
@@ -22,10 +22,14 @@ from qiskit_ibm_runtime import QiskitRuntimeService
 from qiskit_ibm_runtime.fake_provider import FakeProviderForBackendV2
 
 from src.quantum_circuits import (
+    RY_RZ_CRX_ansatz,
+    RY_RZ_RXX_ansatz,
     angle_fmap,
     dense_angle_fmap,
+    double_entanglement_ansatz,
     overlapped_ansatz,
     phase_cry_fmap,
+    u_cu_ansatz,
 )
 
 
@@ -135,7 +139,6 @@ class CircuitFactory:
             fmap = dense_angle_fmap(
                 num_qubits=self.num_qubits,
                 reps=self.fmap_reps,
-                # entanglement=self.fmap_entanglement,
                 insert_barriers=True,
             )
         elif self.fmap_name == "PhaseCRY":
@@ -151,7 +154,7 @@ class CircuitFactory:
 
         # Initialize ansatz
         ansatz: QuantumCircuit | None = None
-        if self.ansatz_name == "Real_amplitudes":
+        if self.ansatz_name == "RealAmplitudes":
             ansatz = RealAmplitudes(
                 num_qubits=self.num_qubits,
                 entanglement=self.ansatz_entanglement,
@@ -159,19 +162,47 @@ class CircuitFactory:
                 insert_barriers=True,
             )
         elif self.ansatz_name == "EfficientSU2":
-            ansatz = efficient_su2(
+            ansatz = EfficientSU2(
                 num_qubits=self.num_qubits,
                 entanglement=self.ansatz_entanglement,
                 reps=self.ansatz_reps,
                 insert_barriers=True,
             )
-        # elif self.ansatz_name == "Overlapped":
-        #     ansatz = overlapped_ansatz(
-        #         num_qubits=self.num_qubits,
-        #         entanglement=self.ansatz_entanglement,
-        #         reps=self.ansatz_reps,
-        #         insert_barriers=True,
-        #     )
+        elif self.ansatz_name == "RY_RZ_CRX":
+            ansatz = RY_RZ_CRX_ansatz(
+                num_qubits=self.num_qubits,
+                entanglement=self.ansatz_entanglement,
+                reps=self.ansatz_reps,
+                insert_barriers=True,
+            )
+        elif self.ansatz_name == "RY_RZ_RXX":
+            ansatz = RY_RZ_RXX_ansatz(
+                num_qubits=self.num_qubits,
+                entanglement=self.ansatz_entanglement,
+                reps=self.ansatz_reps,
+                insert_barriers=True,
+            )
+        elif self.ansatz_name == "Overlapped":
+            ansatz = overlapped_ansatz(
+                num_qubits=self.num_qubits,
+                entanglement=self.ansatz_entanglement,
+                reps=self.ansatz_reps,
+                insert_barriers=True,
+            )
+        elif self.ansatz_name == "DoubleEnt":
+            ansatz = double_entanglement_ansatz(
+                num_qubits=self.num_qubits,
+                entanglement=self.ansatz_entanglement,
+                reps=self.ansatz_reps,
+                insert_barriers=True,
+            )
+        elif self.ansatz_name == "U_CU":
+            ansatz = u_cu_ansatz(
+                num_qubits=self.num_qubits,
+                entanglement=self.ansatz_entanglement,
+                reps=self.ansatz_reps,
+                insert_barriers=True,
+            )
         else:
             raise ValueError("Ansatz not implemented yet!")
 
