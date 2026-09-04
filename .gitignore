@@ -235,3 +235,5 @@ hpc/*
 #Logs
 logs
 
+# Figures
+figures/*
