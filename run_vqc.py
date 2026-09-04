@@ -216,7 +216,9 @@ if __name__ == "__main__":
     specificity = tn / (tn + fp) if (tn + fp) > 0 else 0
 
     # ROC CURVE
-    scores_for_roc = test_expectations
+    scores_for_roc = (
+        1 - test_expectations
+    ) / 2  # Convert expectation values to scores in [0,1]
     fpr, tpr, thresholds = roc_curve(y_test, scores_for_roc, pos_label=pos_label)
     roc_auc = auc(fpr, tpr)
 
